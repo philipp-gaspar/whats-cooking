@@ -10,5 +10,6 @@ setup(
     long_description=open('README.md').read(),
     author='Philipp Gaspar',
     author_email='philipp.gaspar@cern.ch',
+    url='https://github.com/philipp-gaspar/WhatsCooking',
 )
 
