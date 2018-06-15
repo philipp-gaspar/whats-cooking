@@ -102,3 +102,8 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Dataset
+data/sample_submission.csv
+data/test.json
+data/train.json
