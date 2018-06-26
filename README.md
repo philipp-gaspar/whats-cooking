@@ -1,5 +1,5 @@
 <p align="center">
-<img src="cook.png" width="200" ></a>
+<img src="cook.png" width="400" ></a>
 </p>
 
 
