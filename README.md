@@ -1,3 +1,8 @@
+<p align="center">
+<img src="cook.png" width="200" ></a>
+</p>
+
+
 # What's Cooking
 
 Repository for the analysis for the [What's Cooking Kaggle Competition](https://www.kaggle.com/c/whats-cooking) where we use ingredients to categorize a particular cuisine.
