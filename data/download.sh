@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -f train.json ]; then
-    if kaggle; then
+    if kaggle -v; then
 	echo "Downloading the dataset:"
     	kaggle competitions download -c whats-cooking -p $PWD
 
