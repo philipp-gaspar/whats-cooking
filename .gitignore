@@ -107,3 +107,5 @@ venv.bak/
 data/sample_submission.csv
 data/test.json
 data/train.json
+
+.DS_Store
