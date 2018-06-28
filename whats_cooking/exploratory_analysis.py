@@ -77,7 +77,7 @@ if __name__ == '__main__':
             cuisine_names[i] = clean_name
 
     # cuisines bar plot
-    fig_file = fig_path + 'cuisines_barplot.eps'
+    fig_file = fig_path + 'cuisines_barplot.pdf'
 
     plt.figure(figsize=(10, 7))
     sns.barplot(x=cuisine_values,
@@ -86,18 +86,18 @@ if __name__ == '__main__':
                 linewidth=1)
     plt.xlabel('Counts')
     plt.ylabel('Cuisines')
-    plt.savefig(fig_file, format='eps', bbox_inches='tight', dpi=1200)
+    plt.savefig(fig_file, bbox_inches='tight', dpi=1200)
     plt.close()
 
     # cuisines pie chart
-    fig_file = fig_path + 'cuisines_piechart.eps'
+    fig_file = fig_path + 'cuisines_piechart.pdf'
     top_cuisines = 5
     short_cuisine_values = cuisine_values[0:top_cuisines]
     short_cuisine_values.append(sum(cuisine_values[top_cuisines:]))
     short_cuisine_names = cuisine_names[0:top_cuisines]
     short_cuisine_names.append(u'Others')
 
-    plt.figure(figsize=(7,7))
+    plt.figure(figsize=(7, 7))
     explode = list(np.zeros(top_cuisines)) # explode the last slice ('Others')
     explode.append(0.08)
 
@@ -108,5 +108,5 @@ if __name__ == '__main__':
     plt.title('Cuisines')
     plt.tight_layout()
     plt.axis('equal')
-    plt.savefig(fig_file, format='eps', bbox_inches='tight', dpi=1200)
+    plt.savefig(fig_file, bbox_inches='tight', dpi=1200)
     plt.close()
