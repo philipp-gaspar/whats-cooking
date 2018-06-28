@@ -6,6 +6,9 @@ import os
 import numpy as np
 import pandas as pd
 
+from collections import Counter
+from multiprocessing import Pool, cpu_count
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set(style='darkgrid', font_scale=1.5)
@@ -30,6 +33,46 @@ def create_folder(complete_path):
         os.makedirs(complete_path)
 
     return 0
+
+def parallel_counting(data):
+    """
+    Auxiliary function for parallel counting.
+    """
+    return data.map(Counter).sum()
+
+def ingredients_counter(data):
+    """
+    Function to count the ingredients in parallel fashion.
+
+    Parameter:
+    ---------
+    data : pandas series
+        Pandas Series object with the ingredients for counting.
+
+    Returns:
+    -------
+    ingredients_count : pandas series
+        Series with count for each ingredient.
+
+    Note:
+    ----
+    The ingredients are returned in descending order
+    """
+    # Let's make this counter process parallel
+    # using the 'multiprocessing' library
+    cores = cpu_count()
+
+    # separate data into chunks for the parallel processing
+    data_chunks = np.array_split(data, cores)
+
+    pool = Pool(cores)
+    counter_list = pool.map(parallel_counting, data_chunks)
+    pool.close()
+
+    ingredients_count = pd.Series(sum(counter_list, \
+    Counter())).sort_values(ascending=False)
+
+    return ingredients_count
 
 if __name__ == '__main__':
 
@@ -108,5 +151,67 @@ if __name__ == '__main__':
     plt.title('Cuisines')
     plt.tight_layout()
     plt.axis('equal')
+    plt.savefig(fig_file, bbox_inches='tight', dpi=1200)
+    plt.close()
+
+    # ===========
+    # INGREDIENTS
+    # ===========
+    df['n_ingredients'] = df['ingredients'].str.len()
+
+    mean_ingredients = df.groupby(['cuisine'])['n_ingredients'].mean()
+    std_ingredients = df.groupby(['cuisine'])['n_ingredients'].std()
+
+    # string manipulation of cuisine names
+    cuisine_names = []
+
+    for name in mean_ingredients.index:
+        name = name.title() # capitalize each word
+
+        if name.find('_') > 0: # found an underscore in the string name
+            name = name.replace('_', ' ') # replace it with a space
+        cuisine_names.append(name)
+
+    # mean ingredients barplot
+    fig_file = fig_path + 'mean_ingredients_barplot.pdf'
+    plt.figure(figsize=(10,7))
+    sns.barplot(x=mean_ingredients.values,
+                xerr=std_ingredients.values,
+                y=cuisine_names,
+                edgecolor=(0,0,0),
+                linewidth=1,
+                error_kw=dict(ecolor='gray', lw=1, capsize=3, capthick=1))
+    plt.ylabel('Cuisine')
+    plt.xlabel('Mean Ingredients')
+    plt.savefig(fig_file, bbox_inches='tight', dpi=1200)
+    plt.close()
+
+    # counting ingredients from the entire dataset
+    ingredients_count = ingredients_counter(df['ingredients'])
+
+    # getting the top ingredients in the whole dataset
+    top_common = 15
+    top_ingredients_names = list(ingredients_count[:top_common].index)
+    top_ingredients_values = list(ingredients_count[:top_common].values)
+
+    # string manipulation of cuisine names
+    clean_names = []
+    for i, name in enumerate(top_ingredients_names):
+        name = name.title() # capitalize each word
+
+        if name.find('_') > 0: # found an underscore in the string name
+            name = name.replace('_', ' ') # replace it with a space
+        clean_names.append(name)
+
+    # top ingredients barplot
+    fig_file = fig_path + 'top_ingredients_barplot.pdf'
+    plt.figure(figsize=(10,7))
+    sns.barplot(x=top_ingredients_values,
+                y=clean_names,
+                edgecolor=(0,0,0),
+                linewidth=1)
+    plt.ylabel('Ingredients')
+    plt.xlabel('Counts')
+    plt.title('Top %i Most Used Ingredients' % int(top_common))
     plt.savefig(fig_file, bbox_inches='tight', dpi=1200)
     plt.close()
