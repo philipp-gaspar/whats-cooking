@@ -107,17 +107,16 @@ if __name__ == '__main__':
     # FOLDERS
     # =======
     package_path = os.path.dirname(os.getcwd())
-    data_path = package_path + '/data/'
+    data_path = os.path.join(package_path, 'data')
 
     # create folder for figures
-    fig_path = package_path + '/figures/'
+    fig_path = os.path.join(package_path, 'figures')
     create_folder(fig_path)
 
     # =========
     # LOAD DATA
     # =========
-    input_name = 'train.json'
-    input_file = data_path + input_name
+    input_file = os.path.join(data_path, 'train.json')
 
     df = pd.read_json(input_file)
 
@@ -140,7 +139,7 @@ if __name__ == '__main__':
 
 
     # cuisines bar plot
-    fig_file = fig_path + 'cuisines_barplot.pdf'
+    fig_file = os.path.join(fig_path, 'cuisines_barplot.pdf')
 
     plt.figure(figsize=(10, 7))
     sns.barplot(x=cuisine_values,
@@ -153,7 +152,7 @@ if __name__ == '__main__':
     plt.close()
 
     # cuisines pie chart
-    fig_file = fig_path + 'cuisines_piechart.pdf'
+    fig_file = os.path.join(fig_path, 'cuisines_piechart.pdf')
     top_cuisines = 5
     short_cuisine_values = cuisine_values[0:top_cuisines]
     short_cuisine_values.append(sum(cuisine_values[top_cuisines:]))
@@ -186,7 +185,7 @@ if __name__ == '__main__':
     cuisine_clean_names = clean_cuisine_names(list(mean_ingredients.index))
 
     # mean ingredients barplot
-    fig_file = fig_path + 'mean_ingredients_barplot.pdf'
+    fig_file = os.path.join(fig_path, 'mean_ingredients_barplot.pdf')
     plt.figure(figsize=(10,7))
     sns.barplot(x=mean_ingredients.values,
                 xerr=std_ingredients.values,
@@ -211,7 +210,8 @@ if __name__ == '__main__':
     cuisine_clean_names = clean_cuisine_names(top_ingredients_names)
 
     # top ingredients barplot
-    fig_file = fig_path + 'top_ingredients_barplot.pdf'
+    fig_file = os.path.join(fig_path, 'top_ingredients_barplot.pdf')
+
     plt.figure(figsize=(10,7))
     sns.barplot(x=top_ingredients_values,
                 y=cuisine_clean_names,
