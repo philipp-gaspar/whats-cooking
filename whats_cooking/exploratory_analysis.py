@@ -178,24 +178,18 @@ if __name__ == '__main__':
     # ===========
     df['n_ingredients'] = df['ingredients'].str.len()
 
-    mean_ingredients = df.groupby(['cuisine'])['n_ingredients'].mean()
-    std_ingredients = df.groupby(['cuisine'])['n_ingredients'].std()
-
     # string manipulation of cuisine names
-    cuisine_clean_names = clean_cuisine_names(list(mean_ingredients.index))
+    cuisine_clean_names = clean_cuisine_names(df.cuisine.unique())
 
-    # mean ingredients barplot
-    fig_file = os.path.join(fig_path, 'mean_ingredients_barplot.pdf')
-    plt.figure(figsize=(10,7))
-    sns.barplot(x=mean_ingredients.values,
-                xerr=std_ingredients.values,
-                y=cuisine_clean_names,
-                edgecolor=(0,0,0),
-                linewidth=1,
-                error_kw=dict(ecolor='gray', lw=1, capsize=3, capthick=1))
-    plt.ylabel('Cuisine')
-    plt.xlabel('Mean Ingredients')
-    plt.savefig(fig_file, bbox_inches='tight', dpi=1200)
+    # box plot number of ingredients
+    fig_file = os.path.join(fig_path, 'ingredients_boxplot.pdf')
+    plt.figure(figsize=(16, 6))
+    ax = sns.boxplot(x='cuisine', y='n_ingredients', data=df)
+    plt.ylabel('Number of Ingredients')
+    plt.xlabel('Cuisine')
+    plt.xticks(plt.xticks()[0], cuisine_clean_names)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=35)
+    plt.savefig(fig_file, bbox_inches='tight', dpt=1200)
     plt.close()
 
     # counting ingredients from the entire dataset
