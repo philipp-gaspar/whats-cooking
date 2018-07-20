@@ -13,11 +13,11 @@ We will use the **Kaggle API** to download the dataset directly from the command
 
 ## Notebooks
 
-IPython noteooks for this analysis can be found inside the `notebooks` folder.
+IPython notebooks for this analysis can be found inside the `notebooks` folder.
 
 <p align="center">
 :snake::notebook:
 </p>
 
  * `Exploratory Data Analisis` - Several plots and valuable insights about the dataset.
- * `Deep Learning for Text` - First model tentative using a deep neural network as the multiclassification model and TF-IDF for text representation.
+ * `Deep Learning for Text` - First model tentative using a deep neural network as the multiclassification model and TF-IDF text representation.
